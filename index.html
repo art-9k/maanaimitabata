@@ -15,18 +15,15 @@
             --text-gray: #555555;
             --accent-yellow: #f4b251;
             --accent-green: #2ecc71;
-
+            --border-light: rgba(0, 0, 0, 0.1);
             --nav-bg: rgba(255, 255, 255, 0.65);
             --nav-border: rgba(0, 0, 0, 0.05);
-
-            --glass-bg: rgba(255, 255, 255, 0.35);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-
-            --blob-1: rgba(189, 39, 45, 0.15);
-            --blob-2: rgba(244, 178, 81, 0.15);
-
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             --btn-text: #ffffff;
+            --blob-1: rgba(189, 39, 45, 0.18);
+            --blob-2: rgba(244, 178, 81, 0.18);
         }
 
         body.dark-mode {
@@ -34,16 +31,14 @@
             --light-gray: #0a0a0a;
             --text-dark: #f5f5f5;
             --text-gray: #aaaaaa;
-
+            --border-light: rgba(255, 255, 255, 0.1);
             --nav-bg: rgba(18, 18, 18, 0.65);
             --nav-border: rgba(255, 255, 255, 0.08);
-
             --glass-bg: rgba(30, 30, 30, 0.45);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-
-            --blob-1: rgba(189, 39, 45, 0.25);
-            --blob-2: rgba(244, 178, 81, 0.15);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --blob-1: rgba(189, 39, 45, 0.3);
+            --blob-2: rgba(244, 178, 81, 0.2);
         }
 
         * {
@@ -63,21 +58,57 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            -webkit-filter: blur(80px);
+            animation: float 15s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            width: 50vw;
+            height: 50vw;
+            background: var(--blob-1);
+            top: -10vh;
+            left: -10vw;
+        }
+
+        .blob-2 {
+            width: 45vw;
+            height: 45vw;
+            background: var(--blob-2);
+            bottom: -10vh;
+            right: -10vw;
+            animation-delay: -5s;
+        }
+
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 15px 40px;
+            padding: 10px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
             background: var(--nav-bg);
             border-bottom: 0.5px solid var(--nav-border);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            -webkit-transform: translateZ(0);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             transform: translateZ(0);
+            -webkit-transform: translateZ(0);
             transition: background-color 0.4s ease, border-color 0.4s ease;
         }
 
@@ -150,7 +181,8 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            padding-top: 60px;
+            padding-top: 50px;
+            z-index: 1;
         }
 
         .mask {
@@ -164,7 +196,6 @@
             transform: translateY(110%);
             opacity: 0;
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s;
-            will-change: transform, opacity;
         }
 
         .page-section.in-view .reveal-up {
@@ -189,12 +220,13 @@
             color: #ffffff;
             text-align: center;
             padding: 20px;
+            z-index: 2;
         }
 
         .home-logo {
-            max-width: 320px;
-            width: 85%;
-            margin-bottom: 30px;
+            max-width: 250px;
+            width: 80%;
+            margin-bottom: 20px;
         }
 
         .huge-title {
@@ -231,15 +263,12 @@
             color: var(--red-bg);
             margin-bottom: 15px;
             font-weight: 800;
-            position: relative;
-            z-index: 2;
         }
 
         #eventos {
-            background-color: var(--light-bg);
+            background-color: transparent;
             text-align: center;
             padding: 100px 20px;
-            transition: background-color 0.4s ease;
         }
 
         .event-desc {
@@ -281,64 +310,12 @@
         }
 
         #motivos {
-            background-color: var(--light-gray);
+            background-color: transparent;
             padding: 100px 20px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            transition: background-color 0.4s ease;
-        }
-
-        .blobs-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            -webkit-filter: blur(60px);
-            animation: float 15s infinite alternate ease-in-out;
-        }
-
-        .blob-1 {
-            background: var(--blob-1);
-            width: 350px;
-            height: 350px;
-            top: -50px;
-            left: -50px;
-        }
-
-        .blob-2 {
-            background: var(--blob-2);
-            width: 300px;
-            height: 300px;
-            bottom: -50px;
-            right: -50px;
-            animation-delay: -5s;
-        }
-
-        .motives-title {
-            position: relative;
-            z-index: 2;
-            font-size: clamp(24px, 5vw, 40px);
-            font-weight: 900;
-            color: var(--text-dark);
-            max-width: 800px;
-            margin: 20px auto 50px auto;
-            line-height: 1.2;
         }
 
         .motives-grid {
-            position: relative;
-            z-index: 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
@@ -346,38 +323,22 @@
             width: 100%;
         }
 
-        .motives-card-wrapper {
-            width: 100%;
-            height: 100%;
-        }
-
         .motives-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 40px 30px;
             text-align: left;
             box-shadow: var(--glass-shadow);
-            -webkit-transform: translateZ(0);
             transform: translateZ(0);
-            height: 100%;
+            -webkit-transform: translateZ(0);
             transition: transform 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
         }
 
         .motives-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .motives-card-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--red-bg);
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--border-light);
-            padding-bottom: 15px;
+            transform: translateY(-5px) translateZ(0);
         }
 
         .motives-list {
@@ -389,7 +350,7 @@
             position: relative;
             padding-left: 20px;
             line-height: 1.6;
-            color: var(--text-gray);
+            color: var(--text-dark);
             font-weight: 500;
             font-size: 14px;
         }
@@ -404,7 +365,7 @@
 
         #igrejas,
         #calendario {
-            background-color: var(--light-bg);
+            background-color: transparent;
             display: block;
         }
 
@@ -439,7 +400,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background-color: var(--light-bg);
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-right: 1px solid var(--glass-border);
             position: relative;
             transition: background-color 0.4s ease;
         }
@@ -503,7 +467,7 @@
         }
 
         .badge-closed {
-            background-color: var(--light-gray);
+            background-color: var(--glass-bg);
             color: var(--text-gray);
             border: 1px solid var(--border-light);
         }
@@ -529,7 +493,7 @@
             left: 0;
             width: 100%;
             height: 6px;
-            background-color: var(--light-gray);
+            background-color: var(--border-light);
         }
 
         .progress-fill {
@@ -545,7 +509,9 @@
         .sede-panel {
             text-align: center;
             align-items: center;
-            background: radial-gradient(circle at center, var(--light-gray) 0%, var(--light-bg) 100%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             width: 100%;
             height: 100vh;
             padding: 100px 5%;
@@ -576,7 +542,7 @@
             padding: 25px 0;
             font-size: 18px;
             font-weight: 500;
-            color: var(--text-gray);
+            color: var(--text-dark);
         }
 
         .sede-item span {
@@ -592,7 +558,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -600,6 +566,8 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .modal-overlay.active {
@@ -609,23 +577,23 @@
 
         .modal-content {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 28px;
             max-width: 450px;
             width: 90%;
             text-align: center;
             border: 1px solid var(--glass-border);
-            transform: translateY(20px);
+            transform: translateY(20px) translateZ(0);
+            -webkit-transform: translateY(20px) translateZ(0);
             transition: transform 0.3s ease;
             box-shadow: var(--glass-shadow);
-            -webkit-transform: translateZ(0);
-            color: var(--text-dark);
         }
 
         .modal-overlay.active .modal-content {
             transform: translateY(0) translateZ(0);
+            -webkit-transform: translateY(0) translateZ(0);
         }
 
         .modal-close {
@@ -635,7 +603,7 @@
             background: none;
             border: none;
             font-size: 28px;
-            color: var(--text-gray);
+            color: var(--text-dark);
             cursor: pointer;
         }
 
@@ -656,9 +624,9 @@
 
         @media (max-width: 900px) {
             nav {
-                padding: 15px 20px;
+                padding: 8px 15px;
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
             }
 
             .nav-clock {
@@ -728,13 +696,18 @@
             }
 
             100% {
-                transform: translate(20px, 30px) scale(1.1);
+                transform: translate(15vw, 15vh) scale(1.1);
             }
         }
     </style>
 </head>
 
 <body>
+
+    <div class="ambient-light">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
     <nav>
         <div class="nav-tabs">
@@ -792,25 +765,23 @@
         <div class="event-buttons mask">
             <div class="reveal-up delay-3"
                 style="display:flex; gap:15px; margin-top:30px; flex-wrap:wrap; justify-content:center;">
-                <button class="btn-modern btn-primary" onclick="showInfo('evento')">📅 DETALHES</button>
-                <button class="btn-modern btn-secondary" onclick="showInfo('inscricao')">⏰ INSCRIÇÃO</button>
+                <button class="btn-modern btn-primary" onclick="showInfo('evento')">DETALHES</button>
+                <button class="btn-modern btn-secondary" onclick="showInfo('inscricao')">INSCRIÇÃO</button>
             </div>
         </div>
     </section>
 
     <section id="motivos" class="page-section">
-        <div class="blobs-container">
-            <div class="blob blob-1"></div>
-            <div class="blob blob-2"></div>
-        </div>
         <div class="mask">
             <div class="section-subtitle reveal-up">Orientação do Mês</div>
         </div>
         <div class="motives-grid">
-            <div class="motives-card-wrapper mask">
-                <div class="reveal-up delay-1" style="width: 100%; height: 100%;">
+            <div class="mask">
+                <div class="reveal-up delay-1" style="height: 100%;">
                     <div class="motives-card">
-                        <h4 class="motives-card-title">CIRCULAR 088/2026</h4>
+                        <h4
+                            style="color:var(--red-bg); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
+                            CIRCULAR 088/2026</h4>
                         <ul class="motives-list">
                             <li>Fidelidade no exercício do ministério e unção para assistência;</li>
                             <li>Saúde e vida profissional dos Pastores e familiares;</li>
@@ -821,10 +792,12 @@
                     </div>
                 </div>
             </div>
-            <div class="motives-card-wrapper mask">
-                <div class="reveal-up delay-2" style="width: 100%; height: 100%;">
+            <div class="mask">
+                <div class="reveal-up delay-2" style="height: 100%;">
                     <div class="motives-card">
-                        <h4 class="motives-card-title" style="color:var(--text-dark);">GERAIS DE ORAÇÃO</h4>
+                        <h4
+                            style="color:var(--text-dark); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
+                            GERAIS DE ORAÇÃO</h4>
                         <ul class="motives-list">
                             <li>Pátria e autoridades constituídas (Três Poderes);</li>
                             <li>Conselho da Igreja Cristã Maranata e Presbitério;</li>
@@ -1172,7 +1145,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 
