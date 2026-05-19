@@ -3,32 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maanaim de Itabatã | ICM</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --red-bg: #bd272d;
             --light-bg: #ffffff;
-            --light-gray: #f5f5f5;
+            --light-gray: #fcfcfc;
             --text-dark: #111111;
             --text-gray: #555555;
             --accent-yellow: #f4b251;
             --accent-green: #2ecc71;
-            --border-light: rgba(0, 0, 0, 0.1);
+
             --nav-bg: rgba(255, 255, 255, 0.65);
             --nav-border: rgba(0, 0, 0, 0.05);
+
+            --glass-bg: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+
+            --blob-1: rgba(189, 39, 45, 0.15);
+            --blob-2: rgba(244, 178, 81, 0.15);
+
             --btn-text: #ffffff;
         }
 
         body.dark-mode {
-            --light-bg: #0a0a0a;
-            --light-gray: #151515;
+            --light-bg: #050505;
+            --light-gray: #0a0a0a;
             --text-dark: #f5f5f5;
             --text-gray: #aaaaaa;
-            --border-light: rgba(255, 255, 255, 0.1);
+
             --nav-bg: rgba(18, 18, 18, 0.65);
             --nav-border: rgba(255, 255, 255, 0.08);
+
+            --glass-bg: rgba(30, 30, 30, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+
+            --blob-1: rgba(189, 39, 45, 0.25);
+            --blob-2: rgba(244, 178, 81, 0.15);
         }
 
         * {
@@ -36,6 +51,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -55,11 +71,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
             background: var(--nav-bg);
             border-bottom: 0.5px solid var(--nav-border);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
             transition: background-color 0.4s ease, border-color 0.4s ease;
         }
 
@@ -125,12 +143,14 @@
 
         .page-section {
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             width: 100vw;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            padding-top: 60px;
         }
 
         .mask {
@@ -144,6 +164,7 @@
             transform: translateY(110%);
             opacity: 0;
             transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s;
+            will-change: transform, opacity;
         }
 
         .page-section.in-view .reveal-up {
@@ -171,7 +192,8 @@
         }
 
         .home-logo {
-            max-width: 250px;
+            max-width: 320px;
+            width: 85%;
             margin-bottom: 30px;
         }
 
@@ -209,6 +231,8 @@
             color: var(--red-bg);
             margin-bottom: 15px;
             font-weight: 800;
+            position: relative;
+            z-index: 2;
         }
 
         #eventos {
@@ -257,13 +281,64 @@
         }
 
         #motivos {
-            background: radial-gradient(circle at center, var(--light-gray) 0%, var(--light-bg) 100%);
+            background-color: var(--light-gray);
             padding: 100px 20px;
             text-align: center;
-            transition: background 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: background-color 0.4s ease;
+        }
+
+        .blobs-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            -webkit-filter: blur(60px);
+            animation: float 15s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            background: var(--blob-1);
+            width: 350px;
+            height: 350px;
+            top: -50px;
+            left: -50px;
+        }
+
+        .blob-2 {
+            background: var(--blob-2);
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        .motives-title {
+            position: relative;
+            z-index: 2;
+            font-size: clamp(24px, 5vw, 40px);
+            font-weight: 900;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 20px auto 50px auto;
+            line-height: 1.2;
         }
 
         .motives-grid {
+            position: relative;
+            z-index: 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
@@ -271,20 +346,38 @@
             width: 100%;
         }
 
+        .motives-card-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
         .motives-card {
-            background: var(--nav-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--nav-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 40px 30px;
             text-align: left;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--glass-shadow);
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            height: 100%;
             transition: transform 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
         }
 
         .motives-card:hover {
             transform: translateY(-5px);
+        }
+
+        .motives-card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--red-bg);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 15px;
         }
 
         .motives-list {
@@ -324,6 +417,7 @@
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         .h-scroll-container::-webkit-scrollbar {
@@ -399,6 +493,7 @@
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            width: max-content;
         }
 
         .badge-open {
@@ -497,15 +592,14 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.4);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
-            backdrop-filter: blur(8px);
         }
 
         .modal-overlay.active {
@@ -514,21 +608,24 @@
         }
 
         .modal-content {
-            background: var(--nav-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             padding: 40px;
             border-radius: 24px;
             max-width: 450px;
             width: 90%;
             text-align: center;
-            border: 1px solid var(--nav-border);
+            border: 1px solid var(--glass-border);
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            box-shadow: var(--glass-shadow);
+            -webkit-transform: translateZ(0);
+            color: var(--text-dark);
         }
 
         .modal-overlay.active .modal-content {
-            transform: translateY(0);
+            transform: translateY(0) translateZ(0);
         }
 
         .modal-close {
@@ -624,6 +721,16 @@
                 box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
             }
         }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(20px, 30px) scale(1.1);
+            }
+        }
     </style>
 </head>
 
@@ -685,39 +792,47 @@
         <div class="event-buttons mask">
             <div class="reveal-up delay-3"
                 style="display:flex; gap:15px; margin-top:30px; flex-wrap:wrap; justify-content:center;">
-                <button class="btn-modern btn-primary" onclick="showInfo('evento')">DETALHES</button>
-                <button class="btn-modern btn-secondary" onclick="showInfo('inscricao')">INSCRIÇÃO</button>
+                <button class="btn-modern btn-primary" onclick="showInfo('evento')">📅 DETALHES</button>
+                <button class="btn-modern btn-secondary" onclick="showInfo('inscricao')">⏰ INSCRIÇÃO</button>
             </div>
         </div>
     </section>
 
     <section id="motivos" class="page-section">
+        <div class="blobs-container">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </div>
         <div class="mask">
             <div class="section-subtitle reveal-up">Orientação do Mês</div>
         </div>
         <div class="motives-grid">
-            <div class="motives-card reveal-up delay-1">
-                <h4
-                    style="color:var(--red-bg); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
-                    CIRCULAR 088/2026</h4>
-                <ul class="motives-list">
-                    <li>Fidelidade no exercício do ministério e unção para assistência;</li>
-                    <li>Saúde e vida profissional dos Pastores e familiares;</li>
-                    <li>Viagens para assistência às Igrejas no Brasil e exterior;</li>
-                    <li>Levantamento de novos Pastores e Ungidos;</li>
-                    <li>Diáconos e Obreiros no auxílio em suas funções.</li>
-                </ul>
+            <div class="motives-card-wrapper mask">
+                <div class="reveal-up delay-1" style="width: 100%; height: 100%;">
+                    <div class="motives-card">
+                        <h4 class="motives-card-title">CIRCULAR 088/2026</h4>
+                        <ul class="motives-list">
+                            <li>Fidelidade no exercício do ministério e unção para assistência;</li>
+                            <li>Saúde e vida profissional dos Pastores e familiares;</li>
+                            <li>Viagens para assistência às Igrejas no Brasil e exterior;</li>
+                            <li>Levantamento de novos Pastores e Ungidos;</li>
+                            <li>Diáconos e Obreiros no auxílio em suas funções.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="motives-card reveal-up delay-2">
-                <h4
-                    style="color:var(--text-dark); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
-                    GERAIS DE ORAÇÃO</h4>
-                <ul class="motives-list">
-                    <li>Pátria e autoridades constituídas (Três Poderes);</li>
-                    <li>Conselho da Igreja Cristã Maranata e Presbitério;</li>
-                    <li>Evangelização, EBD e Seminários Mundiais;</li>
-                    <li>Enfermos, saúde dos irmãos e livramento das enfermidades.</li>
-                </ul>
+            <div class="motives-card-wrapper mask">
+                <div class="reveal-up delay-2" style="width: 100%; height: 100%;">
+                    <div class="motives-card">
+                        <h4 class="motives-card-title" style="color:var(--text-dark);">GERAIS DE ORAÇÃO</h4>
+                        <ul class="motives-list">
+                            <li>Pátria e autoridades constituídas (Três Poderes);</li>
+                            <li>Conselho da Igreja Cristã Maranata e Presbitério;</li>
+                            <li>Evangelização, EBD e Seminários Mundiais;</li>
+                            <li>Enfermos, saúde dos irmãos e livramento das enfermidades.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -734,7 +849,7 @@
                         <p class="section-subtitle reveal-up delay-1">RUA ESTADOS UNIDOS, PRÓXIMO AO PSF 010</p>
                     </div>
                     <div class="c-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
                             <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
                             <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
@@ -749,7 +864,7 @@
                         <div class="progress-fill"></div>
                     </div>
                 </div>
-                <div class="image-panel"><img src="https://files.catbox.moe/mk4sss.png"></div>
+                <div class="image-panel"><img src="https://files.catbox.moe/mk4sss.png" alt="Cidade Nova 1"></div>
             </div>
             <div class="slide-item">
                 <div class="info-panel">
@@ -761,7 +876,7 @@
                         <p class="section-subtitle reveal-up delay-1">RUA JUSCELINO KUBISTCHEK N° 329</p>
                     </div>
                     <div class="c-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
                             <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
                             <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
@@ -776,7 +891,7 @@
                         <div class="progress-fill"></div>
                     </div>
                 </div>
-                <div class="image-panel"><img src="https://files.catbox.moe/q2obfe.png"></div>
+                <div class="image-panel"><img src="https://files.catbox.moe/q2obfe.png" alt="Centro"></div>
             </div>
             <div class="slide-item">
                 <div class="info-panel">
@@ -788,7 +903,7 @@
                         <p class="section-subtitle reveal-up delay-1">RUA RIO PARAÍBA DO SUL N° 138</p>
                     </div>
                     <div class="c-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
                             <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
                             <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
@@ -803,7 +918,7 @@
                         <div class="progress-fill"></div>
                     </div>
                 </div>
-                <div class="image-panel"><img src="https://files.catbox.moe/nxoh5z.png"></div>
+                <div class="image-panel"><img src="https://files.catbox.moe/nxoh5z.png" alt="Triângulo Leal"></div>
             </div>
             <div class="slide-item">
                 <div class="info-panel">
@@ -815,7 +930,7 @@
                         <p class="section-subtitle reveal-up delay-1">AVENIDA ITAPETINGA N° 603</p>
                     </div>
                     <div class="c-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
                             <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
                             <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
@@ -830,14 +945,13 @@
                         <div class="progress-fill"></div>
                     </div>
                 </div>
-                <div class="image-panel"><img src="https://files.catbox.moe/7jlrog.png"></div>
+                <div class="image-panel"><img src="https://files.catbox.moe/7jlrog.png" alt="Gazzinelândia"></div>
             </div>
         </div>
     </section>
 
     <section id="calendario" class="page-section">
         <div class="h-scroll-container" id="nationalEvents">
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -845,7 +959,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JANEIRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>16 A 18</span> Unidos em Família (3 Dias)</div>
                             <div class="c-schedule-item sede-item"><span>30/01 A 01/02</span> Unidos em Família (3 Dias)
                             </div>
@@ -856,7 +970,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -864,7 +977,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">FEVEREIRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>14 A 15</span> Jovens, Principiantes</div>
                             <div class="c-schedule-item sede-item"><span>16 A 17</span> 1º Período, Principiantes</div>
                         </div>
@@ -874,7 +987,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -882,7 +994,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">MARÇO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>07 A 08</span> Pastores, Ungidos, Diáconos,
                                 Obreiros, Intercessão e Senhoras</div>
                             <div class="c-schedule-item sede-item"><span>21 A 22</span> 2º e 3º Período, Crianças,
@@ -894,7 +1006,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -902,7 +1013,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">ABRIL</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>03 A 05</span> Grupo de Louvor e
                                 Instrumentistas (3 Dias)</div>
                             <div class="c-schedule-item sede-item"><span>18 A 19</span> Principiantes, 1º Período,
@@ -914,7 +1025,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -922,7 +1032,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">MAIO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>09 A 10</span> 2º Período, Principiantes</div>
                             <div class="c-schedule-item sede-item"><span>23 A 24</span> Pastores, Ungidos, Diáconos,
                                 Obreiros, 3º Período, Pastores Esposas e Filhos</div>
@@ -933,7 +1043,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -941,7 +1050,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JUNHO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>13 A 14</span> Jovens, 4º Período</div>
                             <div class="c-schedule-item sede-item"><span>27 A 28</span> 5º Período, Principiantes,
                                 Família</div>
@@ -952,7 +1061,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -960,7 +1068,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JULHO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>10 A 12</span> Unidos em Família (3 Dias)</div>
                             <div class="c-schedule-item sede-item"><span>24 A 26</span> Unidos em Família, Colegas de
                                 Trabalho (3 Dias)</div>
@@ -971,7 +1079,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -979,7 +1086,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">AGOSTO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>08 A 09</span> 4º Período, Jovens</div>
                             <div class="c-schedule-item sede-item"><span>22 A 23</span> 5º Período, Principiantes,
                                 Vizinhos</div>
@@ -990,7 +1097,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -998,7 +1104,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">SETEMBRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>04 A 06</span> Grupo de Louvor e
                                 Instrumentistas (3 Dias)</div>
                             <div class="c-schedule-item sede-item"><span>19 A 20</span> 1º Período, Acessibilidade, 2º
@@ -1010,7 +1116,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -1018,7 +1123,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">OUTUBRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>10 A 11</span> Grupo de Intercessão e Senhoras
                             </div>
                             <div class="c-schedule-item sede-item"><span>31/10 A 01/11</span> 6º Período, Principiantes,
@@ -1030,7 +1135,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -1038,7 +1142,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">NOVEMBRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>07</span> Preparo para Trombetas e Festas
                                 (Cariacica)</div>
                             <div class="c-schedule-item sede-item"><span>14 A 15</span> Principiantes, 1º Período</div>
@@ -1051,7 +1155,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="slide-item">
                 <div class="info-panel sede-panel">
                     <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
@@ -1059,7 +1162,7 @@
                         <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">DEZEMBRO</h2>
                     </div>
                     <div class="c-schedules sede-schedules mask">
-                        <div class="reveal-up delay-2">
+                        <div class="reveal-up delay-2" style="width:100%">
                             <div class="c-schedule-item sede-item"><span>12 A 13</span> Pastores, Ungidos, Diáconos e
                                 Obreiros, 2º Período</div>
                         </div>
@@ -1073,8 +1176,8 @@
         </div>
     </section>
 
-    <div id="info-modal" class="modal-overlay">
-        <div class="modal-content">
+    <div id="info-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()">×</button>
             <h3 id="modal-title"
                 style="color:var(--red-bg); margin-bottom:20px; font-weight:900; font-size: 22px; text-transform: uppercase;">
