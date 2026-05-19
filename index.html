@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maanaim de Itabatã | ICM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-bg: #bd272d;
+            --light-bg: #ffffff;
+            --light-gray: #f5f5f5;
+            --text-dark: #111111;
+            --text-gray: #555555;
+            --accent-yellow: #f4b251;
+            --accent-green: #2ecc71;
+            --border-light: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(255, 255, 255, 0.65);
+            --nav-border: rgba(0, 0, 0, 0.05);
+            --btn-text: #ffffff;
+        }
+
+        body.dark-mode {
+            --light-bg: #0a0a0a;
+            --light-gray: #151515;
+            --text-dark: #f5f5f5;
+            --text-gray: #aaaaaa;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --nav-bg: rgba(18, 18, 18, 0.65);
+            --nav-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: var(--nav-bg);
+            border-bottom: 0.5px solid var(--nav-border);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+            opacity: 0.5;
+            transition: opacity 0.3s ease, color 0.3s;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--red-bg);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            opacity: 1;
+            color: var(--red-bg);
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .nav-clock {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--red-bg);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #theme-toggle {
+            font-size: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .page-section {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .mask {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .reveal-up {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s;
+        }
+
+        .page-section.in-view .reveal-up {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        #home {
+            background-color: var(--red-bg);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .home-logo {
+            max-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .huge-title {
+            font-size: clamp(35px, 9vw, 110px);
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .verse-block {
+            margin-top: 60px;
+            max-width: 600px;
+        }
+
+        .verse-ref {
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .verse-text {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red-bg);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        #eventos {
+            background-color: var(--light-bg);
+            text-align: center;
+            padding: 100px 20px;
+            transition: background-color 0.4s ease;
+        }
+
+        .event-desc {
+            margin-top: 40px;
+            font-size: 20px;
+            font-weight: 400;
+            max-width: 700px;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        .btn-modern {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--text-dark);
+            color: var(--light-bg);
+        }
+
+        .btn-secondary {
+            background-color: var(--red-bg);
+            color: var(--btn-text);
+        }
+
+        #motivos {
+            background: radial-gradient(circle at center, var(--light-gray) 0%, var(--light-bg) 100%);
+            padding: 100px 20px;
+            text-align: center;
+            transition: background 0.4s ease;
+        }
+
+        .motives-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .motives-card {
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--nav-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: left;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .motives-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .motives-list {
+            list-style: none;
+        }
+
+        .motives-list li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 20px;
+            line-height: 1.6;
+            color: var(--text-gray);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .motives-list li::before {
+            content: "•";
+            color: var(--red-bg);
+            position: absolute;
+            left: 0;
+            font-weight: 900;
+        }
+
+        #igrejas,
+        #calendario {
+            background-color: var(--light-bg);
+            display: block;
+        }
+
+        .h-scroll-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .h-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide-item {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: row;
+            position: relative;
+        }
+
+        .info-panel {
+            flex: 1;
+            padding: 100px 5% 40px 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--light-bg);
+            position: relative;
+            transition: background-color 0.4s ease;
+        }
+
+        .image-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--light-gray);
+        }
+
+        .image-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: transform 5s linear;
+        }
+
+        .active-slide .image-panel img {
+            transform: scale(1.08);
+        }
+
+        .c-schedules {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 30px 0;
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+        }
+
+        .c-schedule-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .c-schedule-item span {
+            font-weight: 900;
+            color: var(--red-bg);
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-open {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .badge-closed {
+            background-color: var(--light-gray);
+            color: var(--text-gray);
+            border: 1px solid var(--border-light);
+        }
+
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .bg-green {
+            background-color: var(--accent-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        .bg-gray {
+            background-color: #999;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: var(--light-gray);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--red-bg);
+        }
+
+        .active-slide .progress-fill {
+            animation: fillBar 5s linear forwards;
+        }
+
+        .sede-panel {
+            text-align: center;
+            align-items: center;
+            background: radial-gradient(circle at center, var(--light-gray) 0%, var(--light-bg) 100%);
+            width: 100%;
+            height: 100vh;
+            padding: 100px 5%;
+        }
+
+        .sede-tag {
+            background-color: var(--text-dark);
+            color: var(--light-bg);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+
+        .sede-schedules {
+            width: 100%;
+            max-width: 800px;
+            border: none;
+        }
+
+        .sede-item {
+            flex-direction: column;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-light);
+            padding: 25px 0;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-gray);
+        }
+
+        .sede-item span {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--red-bg);
+            display: block;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--nav-border);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: #fff;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.4;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-clock {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .huge-title {
+                font-size: clamp(30px, 12vw, 80px);
+            }
+
+            .motives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-item {
+                flex-direction: column-reverse;
+            }
+
+            .info-panel {
+                height: auto;
+                min-height: 60vh;
+                padding: 40px 20px 60px 20px;
+            }
+
+            .image-panel {
+                height: 40vh;
+                flex: none;
+            }
+
+            .sede-item {
+                font-size: 15px;
+            }
+
+            .sede-item span {
+                font-size: 20px;
+            }
+        }
+
+        @keyframes fillBar {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="btn-home" onclick="scrollToSection('home')">Home</button>
+            <button class="tab-btn" id="btn-eventos" onclick="scrollToSection('eventos')">Próximo</button>
+            <button class="tab-btn" id="btn-motivos" onclick="scrollToSection('motivos')">Motivos</button>
+            <button class="tab-btn" id="btn-igrejas" onclick="scrollToSection('igrejas')">Igrejas</button>
+            <button class="tab-btn" id="btn-calendario" onclick="scrollToSection('calendario')">Sede</button>
+        </div>
+        <div class="nav-clock">
+            <span id="clockDisplay">-- MAI | 00:00</span>
+            <div id="theme-toggle" onclick="toggleTheme()">🌙</div>
+        </div>
+    </nav>
+
+    <div class="signature">AGON 2026</div>
+
+    <section id="home" class="page-section">
+        <div class="mask"><img src="https://files.catbox.moe/agygcf.png" class="home-logo reveal-up"></div>
+        <div>
+            <div class="mask">
+                <h1 class="huge-title reveal-up delay-1">MAANAIM</h1>
+            </div><br>
+            <div class="mask">
+                <h1 class="huge-title reveal-up delay-2">DE ITABATÃ</h1>
+            </div>
+        </div>
+        <div class="verse-block">
+            <div class="mask">
+                <div class="verse-ref reveal-up delay-3">Gênesis 32:2</div>
+            </div>
+            <div class="mask">
+                <div class="verse-text reveal-up delay-3">"... Este é o exército de Deus. E chamou o nome daquele lugar
+                    Maanaim."</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="eventos" class="page-section">
+        <div class="mask">
+            <div class="section-subtitle reveal-up">Destaque do Mês</div>
+        </div>
+        <div>
+            <div class="mask">
+                <h1 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">SEMINÁRIO</h1>
+            </div><br>
+            <div class="mask">
+                <h1 class="huge-title reveal-up delay-2" style="color:var(--text-dark)">3º PERÍODO</h1>
+            </div>
+        </div>
+        <div class="mask">
+            <p class="event-desc reveal-up delay-3">23 de maio de 2026, às 09h50.<br>Avenida Estados Unidos (próximo ao
+                PSF 010).</p>
+        </div>
+        <div class="event-buttons mask">
+            <div class="reveal-up delay-3"
+                style="display:flex; gap:15px; margin-top:30px; flex-wrap:wrap; justify-content:center;">
+                <button class="btn-modern btn-primary" onclick="showInfo('evento')">📅 DETALHES</button>
+                <button class="btn-modern btn-secondary" onclick="showInfo('inscricao')">⏰ INSCRIÇÃO</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="motivos" class="page-section">
+        <div class="mask">
+            <div class="section-subtitle reveal-up">Orientação do Mês</div>
+        </div>
+        <div class="motives-grid">
+            <div class="motives-card reveal-up delay-1">
+                <h4
+                    style="color:var(--red-bg); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
+                    CIRCULAR 088/2026</h4>
+                <ul class="motives-list">
+                    <li>Fidelidade no exercício do ministério e unção para assistência;</li>
+                    <li>Saúde e vida profissional dos Pastores e familiares;</li>
+                    <li>Viagens para assistência às Igrejas no Brasil e exterior;</li>
+                    <li>Levantamento de novos Pastores e Ungidos;</li>
+                    <li>Diáconos e Obreiros no auxílio em suas funções.</li>
+                </ul>
+            </div>
+            <div class="motives-card reveal-up delay-2">
+                <h4
+                    style="color:var(--text-dark); margin-bottom:20px; font-weight:900; font-size:20px; border-bottom:2px solid var(--border-light); padding-bottom:15px; text-transform:uppercase;">
+                    GERAIS DE ORAÇÃO</h4>
+                <ul class="motives-list">
+                    <li>Pátria e autoridades constituídas (Três Poderes);</li>
+                    <li>Conselho da Igreja Cristã Maranata e Presbitério;</li>
+                    <li>Evangelização, EBD e Seminários Mundiais;</li>
+                    <li>Enfermos, saúde dos irmãos e livramento das enfermidades.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="igrejas" class="page-section">
+        <div class="h-scroll-container" id="localChurches">
+            <div class="slide-item">
+                <div class="info-panel">
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up"
+                            style="color:var(--text-dark); font-size:clamp(30px, 6vw, 60px);">CIDADE NOVA 1</h2>
+                    </div>
+                    <div class="mask">
+                        <p class="section-subtitle reveal-up delay-1">RUA ESTADOS UNIDOS, PRÓXIMO AO PSF 010</p>
+                    </div>
+                    <div class="c-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
+                            <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
+                            <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
+                        </div>
+                    </div>
+                    <div class="mask">
+                        <div class="live-badge clock-status badge-closed reveal-up delay-3">
+                            <div class="dot-pulse bg-gray"></div><span class="status-text">FORA DO HORÁRIO</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="image-panel"><img src="https://files.catbox.moe/mk4sss.png"></div>
+            </div>
+            <div class="slide-item">
+                <div class="info-panel">
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up"
+                            style="color:var(--text-dark); font-size:clamp(30px, 6vw, 60px);">CENTRO</h2>
+                    </div>
+                    <div class="mask">
+                        <p class="section-subtitle reveal-up delay-1">RUA JUSCELINO KUBISTCHEK N° 329</p>
+                    </div>
+                    <div class="c-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
+                            <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
+                            <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
+                        </div>
+                    </div>
+                    <div class="mask">
+                        <div class="live-badge clock-status badge-closed reveal-up delay-3">
+                            <div class="dot-pulse bg-gray"></div><span class="status-text">FORA DO HORÁRIO</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="image-panel"><img src="https://files.catbox.moe/q2obfe.png"></div>
+            </div>
+            <div class="slide-item">
+                <div class="info-panel">
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up"
+                            style="color:var(--text-dark); font-size:clamp(30px, 6vw, 60px);">TRIÂNGULO LEAL</h2>
+                    </div>
+                    <div class="mask">
+                        <p class="section-subtitle reveal-up delay-1">RUA RIO PARAÍBA DO SUL N° 138</p>
+                    </div>
+                    <div class="c-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
+                            <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
+                            <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
+                        </div>
+                    </div>
+                    <div class="mask">
+                        <div class="live-badge clock-status badge-closed reveal-up delay-3">
+                            <div class="dot-pulse bg-gray"></div><span class="status-text">FORA DO HORÁRIO</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="image-panel"><img src="https://files.catbox.moe/nxoh5z.png"></div>
+            </div>
+            <div class="slide-item">
+                <div class="info-panel">
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up"
+                            style="color:var(--text-dark); font-size:clamp(30px, 6vw, 60px);">GAZZINELÂNDIA</h2>
+                    </div>
+                    <div class="mask">
+                        <p class="section-subtitle reveal-up delay-1">AVENIDA ITAPETINGA N° 603</p>
+                    </div>
+                    <div class="c-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item">Segunda à Quinta <span>19:30</span></div>
+                            <div class="c-schedule-item">Sábado & Domingo <span>19:00</span></div>
+                            <div class="c-schedule-item">Domingo (EBD) <span>10:00</span></div>
+                        </div>
+                    </div>
+                    <div class="mask">
+                        <div class="live-badge clock-status badge-closed reveal-up delay-3">
+                            <div class="dot-pulse bg-gray"></div><span class="status-text">FORA DO HORÁRIO</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="image-panel"><img src="https://files.catbox.moe/7jlrog.png"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="calendario" class="page-section">
+        <div class="h-scroll-container" id="nationalEvents">
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JANEIRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>16 A 18</span> Unidos em Família (3 Dias)</div>
+                            <div class="c-schedule-item sede-item"><span>30/01 A 01/02</span> Unidos em Família (3 Dias)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">FEVEREIRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>14 A 15</span> Jovens, Principiantes</div>
+                            <div class="c-schedule-item sede-item"><span>16 A 17</span> 1º Período, Principiantes</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">MARÇO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>07 A 08</span> Pastores, Ungidos, Diáconos,
+                                Obreiros, Intercessão e Senhoras</div>
+                            <div class="c-schedule-item sede-item"><span>21 A 22</span> 2º e 3º Período, Crianças,
+                                Intermediários e Adolescentes</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">ABRIL</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>03 A 05</span> Grupo de Louvor e
+                                Instrumentistas (3 Dias)</div>
+                            <div class="c-schedule-item sede-item"><span>18 A 19</span> Principiantes, 1º Período,
+                                Jovens</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">MAIO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>09 A 10</span> 2º Período, Principiantes</div>
+                            <div class="c-schedule-item sede-item"><span>23 A 24</span> Pastores, Ungidos, Diáconos,
+                                Obreiros, 3º Período, Pastores Esposas e Filhos</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JUNHO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>13 A 14</span> Jovens, 4º Período</div>
+                            <div class="c-schedule-item sede-item"><span>27 A 28</span> 5º Período, Principiantes,
+                                Família</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">JULHO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>10 A 12</span> Unidos em Família (3 Dias)</div>
+                            <div class="c-schedule-item sede-item"><span>24 A 26</span> Unidos em Família, Colegas de
+                                Trabalho (3 Dias)</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">AGOSTO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>08 A 09</span> 4º Período, Jovens</div>
+                            <div class="c-schedule-item sede-item"><span>22 A 23</span> 5º Período, Principiantes,
+                                Vizinhos</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">SETEMBRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>04 A 06</span> Grupo de Louvor e
+                                Instrumentistas (3 Dias)</div>
+                            <div class="c-schedule-item sede-item"><span>19 A 20</span> 1º Período, Acessibilidade, 2º
+                                Período, Obra no Exterior</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">OUTUBRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>10 A 11</span> Grupo de Intercessão e Senhoras
+                            </div>
+                            <div class="c-schedule-item sede-item"><span>31/10 A 01/11</span> 6º Período, Principiantes,
+                                Dedicação</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">NOVEMBRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>07</span> Preparo para Trombetas e Festas
+                                (Cariacica)</div>
+                            <div class="c-schedule-item sede-item"><span>14 A 15</span> Principiantes, 1º Período</div>
+                            <div class="c-schedule-item sede-item"><span>29</span> Trombetas e Festas V, Autoridades
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="info-panel sede-panel">
+                    <div class="mask"><span class="sede-tag reveal-up">MAANAIM - SEDE</span></div>
+                    <div class="mask">
+                        <h2 class="huge-title reveal-up delay-1" style="color:var(--text-dark)">DEZEMBRO</h2>
+                    </div>
+                    <div class="c-schedules sede-schedules mask">
+                        <div class="reveal-up delay-2">
+                            <div class="c-schedule-item sede-item"><span>12 A 13</span> Pastores, Ungidos, Diáconos e
+                                Obreiros, 2º Período</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 id="modal-title"
+                style="color:var(--red-bg); margin-bottom:20px; font-weight:900; font-size: 22px; text-transform: uppercase;">
+            </h3>
+            <p id="modal-desc" style="font-size:16px; line-height:1.6; text-align:left; color:var(--text-dark);"></p>
+            <button class="btn-modern btn-primary" style="margin-top:30px; width:100%; justify-content:center"
+                onclick="closeModal()">ENTENDI</button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playClick() {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function toggleTheme() {
+            playClick();
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('theme-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.innerText = '☀️';
+            } else {
+                icon.innerText = '🌙';
+            }
+        }
+
+        function showInfo(tipo) {
+            playClick();
+            const modal = document.getElementById('info-modal');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+
+            if (tipo === 'evento') {
+                title.innerText = 'Seminário 3º Período';
+                desc.innerHTML = '<strong>Data:</strong> 23 de Maio de 2026<br><strong>Horário:</strong> às 09h50<br><br><strong>Local:</strong><br>Avenida Estados Unidos (próximo ao PSF 010), Itabatã - BA.<br><br><em>Aguardamos sua presença!</em>';
+            } else if (tipo === 'inscricao') {
+                title.innerText = 'Prazo de Inscrição';
+                desc.innerHTML = 'Fique atento ao prazo!<br><br>O período para confirmar a sua inscrição no Seminário se encerra no dia <strong>17 de Maio de 2026</strong>.<br><br>Procure a coordenação da sua igreja local.';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            playClick();
+            document.getElementById('info-modal').classList.remove('active');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '').toUpperCase();
+            document.getElementById('clockDisplay').innerText = `${dateString} | ${timeString}`;
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        function scrollToSection(sectionId) {
+            playClick();
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    const activeBtn = document.getElementById('btn-' + entry.target.id);
+                    if (activeBtn) activeBtn.classList.add('active');
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.page-section').forEach(section => observer.observe(section));
+
+        const carousels = document.querySelectorAll('.h-scroll-container');
+        carousels.forEach(carousel => {
+            const slides = carousel.querySelectorAll('.slide-item');
+            let autoSlideTimeout;
+            let scrollTimeout;
+
+            function updateActiveSlide(index) {
+                slides.forEach((s, i) => {
+                    if (i === index) {
+                        s.classList.add('active-slide');
+                        const bar = s.querySelector('.progress-fill');
+                        if (bar) {
+                            bar.style.animation = 'none';
+                            bar.offsetHeight;
+                            bar.style.animation = null;
+                        }
+                    } else {
+                        s.classList.remove('active-slide');
+                    }
+                });
+
+                clearTimeout(autoSlideTimeout);
+                autoSlideTimeout = setTimeout(() => {
+                    let nextIndex = (index + 1) % slides.length;
+                    carousel.scrollTo({ left: slides[nextIndex].offsetLeft, behavior: 'smooth' });
+                }, 5000);
+            }
+
+            carousel.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    let currentIndex = Math.round(carousel.scrollLeft / window.innerWidth);
+                    if (!slides[currentIndex].classList.contains('active-slide')) {
+                        updateActiveSlide(currentIndex);
+                    }
+                }, 100);
+            });
+
+            updateActiveSlide(0);
+        });
+
+        function checkCultoStatus() {
+            const agora = new Date();
+            const diaSemana = agora.getDay();
+            const tempoDecimal = agora.getHours() + (agora.getMinutes() / 60);
+            let aberto = false;
+
+            if (diaSemana >= 1 && diaSemana <= 4) {
+                if (tempoDecimal >= 19.5 && tempoDecimal <= (20 + 10 / 60)) aberto = true;
+            } else if (diaSemana === 6) {
+                if (tempoDecimal >= 19.0 && tempoDecimal <= (19 + 40 / 60)) aberto = true;
+            } else if (diaSemana === 0) {
+                if (tempoDecimal >= 19.0 && tempoDecimal <= (19 + 40 / 60)) aberto = true;
+                if (tempoDecimal >= 10.0 && tempoDecimal <= 11.0) aberto = true;
+            }
+
+            document.querySelectorAll('.clock-status').forEach(badge => {
+                const dot = badge.querySelector('.dot-pulse');
+                const text = badge.querySelector('.status-text');
+
+                if (aberto) {
+                    badge.className = "live-badge clock-status badge-open reveal-up delay-3";
+                    dot.className = "dot-pulse bg-green";
+                    text.innerText = "EM ANDAMENTO";
+                } else {
+                    badge.className = "live-badge clock-status badge-closed reveal-up delay-3";
+                    dot.className = "dot-pulse bg-gray";
+                    text.innerText = "FORA DO HORÁRIO";
+                }
+            });
+        }
+        setInterval(checkCultoStatus, 60000); checkCultoStatus();
+    </script>
+</body>
+
+</html>
